@@ -258,7 +258,7 @@ public final class AutoLogin extends JSplitPane implements ProxyHandler, IContex
                     generateTokenReplaceMenu.add(tmpMenu2);
 
                     if (menu.isEnabled()) {
-                        updateRequestMenu.addActionListener(new ActionListener() {
+                        tmpMenu1.addActionListener(new ActionListener() {
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
