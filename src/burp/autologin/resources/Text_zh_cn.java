@@ -4,6 +4,7 @@ import java.util.ListResourceBundle;
 
 public class Text_zh_cn extends ListResourceBundle {
     private final Object[][] data = {
+        {"copy seleted items", "复制选中的条目"},
         {"add session invalid rule", "添加session失效验证规则"},
         {"edit session invalid rule", "修改session失效验证规则"},
         {"delete seleted items", "删除选中项"},

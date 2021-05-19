@@ -86,4 +86,12 @@ public class InfoTable extends MyTable {
     public AutoLoginItem getSelectedItem(){
         return (AutoLoginItem)getValueAt(getSelectedRow(), 3);
     }
+
+    public List<AutoLoginItem> getSelectedItems(){
+        List<AutoLoginItem> result = new Vector<>();
+        for(int i : getSelectedRows()){
+            result.add((AutoLoginItem)getValueAt(i, 3));
+        }
+        return result;
+    }
 }
