@@ -231,8 +231,7 @@ public final class AutoLogin extends JSplitPane implements ProxyHandler, IContex
                     && invocation.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST) {
                 JMenu menu = new JMenu(AutoLogin.name);
                 JMenu updateRequestMenu = new JMenu(Util.l("update current request"));
-                JMenu generateTokenReplaceMenu = new JMenu(
-                        Util.l("generating a token replace rule by selection text"));
+                JMenu generateTokenReplaceMenu = new JMenu(Util.l("generating a token replace rule by selection text"));
                 List<JMenuItem> result = new Vector<>();
                 IHttpRequestResponse requestResponse = invocation.getSelectedMessages()[0];
                 Message msg = new Message(requestResponse);
@@ -388,7 +387,7 @@ public final class AutoLogin extends JSplitPane implements ProxyHandler, IContex
         if (item.getDomain().equals(msg.getDomain())) {
             progressBar.setStringPainted(true);
             progressBar.setMinimum(1);
-            progressBar.setMaximum(session.getLoginMessages().size() + 2);
+            progressBar.setMaximum(session.getLoginMessages().size() + 1);
             panel.add(progressBar);
             // 更新来自repeater的请求
             TimerTask task = new TimerTask() {
@@ -397,25 +396,20 @@ public final class AutoLogin extends JSplitPane implements ProxyHandler, IContex
                 public void run() {
                     // TODO Auto-generated method stub
                     int i = 1;
-                    // 1.重放该请求，若登录状态失效则更新请求的cookie和token信息
+                    session.updateRequest(msg);
                     Message.refreshMessage(msg);
                     progressBar.setValue(i++);
+                    // 1.若登录状态失效，则重新登录刷新当前域的session信息
                     if (!session.isValid(msg)) {
-                        session.updateRequest(msg);
-                        Message.refreshMessage(msg);
-                        progressBar.setValue(i++);
-                        // 2.若登录状态还是失效，则重新登录刷新当前域的session信息
-                        if (!session.isValid(msg)) {
-                            LoginProcessor loginProcessor = session.loginProcessor();
+                        LoginProcessor loginProcessor = session.loginProcessor();
 
-                            while (loginProcessor.hasNext()) {
-                                loginProcessor.step();
+                        while (loginProcessor.hasNext()) {
+                            loginProcessor.step();
 
-                                progressBar.setValue(i++);
-                            }
-
-                            session.updateRequest(msg);
+                            progressBar.setValue(i++);
                         }
+
+                        session.updateRequest(msg);
                     }
                     progressBar.setValue(progressBar.getMaximum());
                     requestResponse.setRequest(msg.getRequest());
